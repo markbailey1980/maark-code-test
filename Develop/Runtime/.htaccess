@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+	Options +FollowSymlinks
+  # Options +SymLinksIfOwnerMatch
+	RewriteEngine On
+  # RewriteBase /
+</IfModule>
+
+# custom rewrites
+RewriteRule ^games/1/?(.*)$ ?player=1 [QSA]
+RewriteRule ^games/2/?(.*)$ ?player=2 [QSA]

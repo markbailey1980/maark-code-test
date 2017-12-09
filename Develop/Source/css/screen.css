@@ -92,7 +92,7 @@ html {
     background-color: rgba(0, 0, 0, 0.4);
     line-height: 20vw;
     vertical-align: middle;
-    color: white; }
+    color: #ffffff; }
   .game.wait:after {
     content: 'wait for the other player';
     text-align: center;
@@ -105,7 +105,7 @@ html {
     background-color: rgba(0, 0, 0, 0.4);
     line-height: 20vw;
     vertical-align: middle;
-    color: white; }
+    color: #ffffff; }
   .game .col {
     width: calc(100% / 7);
     overflow: hidden;
@@ -120,9 +120,9 @@ html {
       width: calc(100% - 15px);
       height: auto;
       padding-top: calc(100% - 15px);
-      background: white;
+      background: #ffffff;
       margin: 15px auto; }
       .game .col div.turn-1 {
-        background: red; }
+        background: #ff0000; }
       .game .col div.turn-2 {
-        background: black; }
+        background: #000000; }

@@ -1,9 +1,9 @@
 
 /* I should really move this VUE and FIREBASE stuff into my JS object but we'll see if I have time */
+
 /* ------------
 VUE 
 ------------ */
-
 /* just messing around with view to update the turn indicator */
 let vGame = new Vue({
 	el: '#player-turn-counter',
@@ -15,15 +15,24 @@ let vGame = new Vue({
 	},
 	methods: {
 		setTurn: function(player) {
-			if (player != 'active') {
-				this.turn = 2;
+			if(player == 'active' || player == '') {
+				this.turn = 1;
 			} else {
-				this.turn = 1
+				this.turn = 2;
 			}
+
 			console.log(`turn = ${this.turn}`);
 		}
 	}
 });
+
+/* set a variable so we can change to active or inactive turn and clear out the last move */
+let otherTurn;
+if (currentPlayer == 1) {
+	otherTurn = 2;
+} else {
+	otherTurn = 1;
+}
 
 
 /* ------------
@@ -31,7 +40,7 @@ FIREBASE
 ------------ */
 let database = firebase.database();
 
-/* write each players' move to DB */
+/* write each players' move to the database */
 function writePlayerData(playerId, move, turn) {
 	firebase.database().ref(`players/${playerId}`).set({
 		move: move,
@@ -40,10 +49,10 @@ function writePlayerData(playerId, move, turn) {
 }
 
 /* listen for changes and return move */
-let gameMoveUpdate = firebase.database().ref(`players/player${vGame.turn}/move`);
+let gameMoveUpdate = firebase.database().ref(`players/player${otherTurn}/move`);
 gameMoveUpdate.on('value', function(snapshot) {
 	let lastMove = snapshot.val();
-	console.log(`watch for val change ${lastMove}`);
+	console.log(`watch for val change = ${lastMove}`);
 
 	/* update the game board */
 	App.updateMove(lastMove);
@@ -52,19 +61,11 @@ gameMoveUpdate.on('value', function(snapshot) {
 let gameTurnUpdate = firebase.database().ref(`players/player1/turn`);
 gameTurnUpdate.on('value', function(snapshot) {
 	let player1Turn = snapshot.val();
-	console.log(`watch for turn change ${player1Turn}`);
+	console.log(`watch for turn change = ${player1Turn}`);
 
 	/* also update the turn counter */
 	vGame.setTurn(player1Turn);
 });
-
-/* set a variable so we can change to active or inactive turn and clear out the last move */
-var otherTurn;
-if (vGame.turn == 1) {
-	otherTurn = 2;
-} else {
-	otherTurn = 1;
-}
 
 
 /* ------------
@@ -91,28 +92,27 @@ document.addEventListener('DOMContentLoaded', function() {
 		},
 		clearData: function() {
 			/* start by making sure our firebase data is clean */
-			writePlayerData(`player1`, '', 'active');
-			writePlayerData(`player2`, '', 'inactive');
+			writePlayerData(`player1`, '', '');
+			writePlayerData(`player2`, '', '');
 		},
 		dropPiece: function(e, div) {
-			console.log(e);
-
 			console.log($(this).attr('id'));
 			/* drop game piece drop to first open spot */		
 			$(this).find('div.open:last').removeClass('open').addClass(`turn-${currentPlayer}`);		
 
+			let dropDiv = $(this).attr('id')
+
 			/* update firebase with clicked selector */
-			writePlayerData(`player${currentPlayer}`, $(this).attr('id'), 'active');
-			writePlayerData(`player${otherTurn}`, '', 'inactive');
+			writePlayerData(`player${currentPlayer}`, `#player${otherTurn} #${dropDiv}`, 'inactive');
+			writePlayerData(`player${otherTurn}`, '', 'active');
  
 			/* set player turn after we've made a move */
-			vGame.setTurn();
 			App.waitTurn('wait');
 		},
 		updateMove: function(div) {
 			if(div) {
-				console.log(`data has been updated = #player${otherTurn} #${div}`);
-				$(`#player${otherTurn} #${div}`).find('div.open:last').removeClass('open').addClass(`turn-${otherTurn}`);
+				console.log(`data has been updated = ${div}`);
+				$(div).find('div.open:last').removeClass('open').addClass(`turn-${otherTurn}`);
 				App.waitTurn('clear');
 			}
 		},
@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log('check win conditions');
 
 			/* look for winning combos and stop game */	
+			/* DIDN'T GET TO THE LOGIC PART YET */
 		}
 	};
 	App.init();
