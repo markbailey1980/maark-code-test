@@ -1,0 +1,10 @@
+{	
+	"player1": {
+		"active": 1,
+		"move": 1
+	},
+	"player2": {
+		"active": 0,
+		"move": 0
+	}
+}
