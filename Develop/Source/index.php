@@ -15,12 +15,14 @@
 	<!-- endbuild -->
 
 	<!-- set variable that will only allow game to be played on games/1/ or games/2/ URLs -->
-	<?php if($player > 0) { ?>
+	
 	<script>
-		var gamePlayable = 1;
-		var currentPlayer = <?=$player?>;
+		var currentPlayer;
+		<?php if($player > 0) { ?>
+			var gamePlayable = 1;
+			currentPlayer = <?=$player?>;
+		<?php } ?>
 	</script>
-	<?php } ?>
 
 </head>
 <body id="<?php if($player > 0) { ?>player<?=$player?><? } ?>">

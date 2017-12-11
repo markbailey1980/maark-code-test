@@ -13,12 +13,14 @@
 	<link rel="stylesheet" href="/css/screen.min.css?a194eb25">
 
 	<!-- set variable that will only allow game to be played on games/1/ or games/2/ URLs -->
-	<?php if($player > 0) { ?>
+	
 	<script>
-		var gamePlayable = 1;
-		var currentPlayer = <?=$player?>;
+		var currentPlayer;
+		<?php if($player > 0) { ?>
+			var gamePlayable = 1;
+			currentPlayer = <?=$player?>;
+		<?php } ?>
 	</script>
-	<?php } ?>
 
 </head>
 <body id="<?php if($player > 0) { ?>player<?=$player?><? } ?>">
@@ -27,7 +29,7 @@
 	<?php if($player > 0) { ?>
 		<p>you are player <?=$player?></p>
 	<?php } else { ?>
-		<p>START GAME - <a href="/games/1" target="_blank">PLAYER 1</a> or <a href="/games/2" target="_blank">PLAYER 2</a></p>
+		<p>START GAME - <a href="games/1" target="_blank">PLAYER 1</a> or <a href="games/2" target="_blank">PLAYER 2</a></p>
 	<?php } ?>
 
 	<main>
@@ -92,7 +94,7 @@
 		<section class="info">
 			<?php if($player > 0) { ?>
 			<h2>PLAYER TURN = <span id="player-turn-counter">{{ turn }}</span></h2>
-			<p><a id="start-over" href="/">START OVER</a></p>
+			<p><a id="start-over" href="../">START OVER</a></p>
 			<?php } ?>
 		</section>
 	</main>
